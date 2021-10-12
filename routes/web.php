@@ -16,7 +16,7 @@ use App\Http\Controllers\CoffeeCategoryController;
 */
 
 Route::get('/', function () {
-    return view('layouts.dashboard');
+    return redirect()->route('coffees.index');
 });
 
 
@@ -27,7 +27,7 @@ Route::prefix('coffees')->group(function () {
     Route::get('{id}/update', [CoffeeController::class, 'edit'])->name('coffees.update');
     Route::post('{id}/update', [CoffeeController::class, 'update'])->name('coffees.edit');
     Route::get('{id}/delete', [CoffeeController::class, 'destroy'])->name('coffees.delete');
-    Route::post('/search', [CoffeeController::class, 'search'])->name('coffees.search');
+    Route::get('/search', [CoffeeController::class, 'search'])->name('coffees.search');
 });
 
 

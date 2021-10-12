@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Coffee;
 use Illuminate\Http\Request;
 use App\Models\CoffeeCategory;
+use App\Http\Requests\CreateCoffeeRequest;
+use App\Http\Requests\UpdateCoffeeRequest;
 
 class CoffeeController extends Controller
 {
@@ -37,7 +39,7 @@ class CoffeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateCoffeeRequest $request)
     {
         $coffee = new Coffee();
         $coffee->name = $request->name;
@@ -74,7 +76,7 @@ class CoffeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCoffeeRequest $request, $id)
     {
         $coffee = Coffee::findOrFail($id);
         $coffee->name = $request->name;
@@ -105,11 +107,8 @@ class CoffeeController extends Controller
 
     function search(Request $request)
     {
-        $keyword = $request->input('keyword');
-        if (!$keyword) {
-            return redirect()->route('coffees.index');
-        }
-        $coffees = Coffee::where('name', 'LIKE', '%' . $keyword . '%');
+        $keyword = $request->search;
+        $coffees = Coffee::where('name', 'LIKE', '%' . $keyword . '%')->get();
         return view('coffees.list', compact('coffees'));
     }
 

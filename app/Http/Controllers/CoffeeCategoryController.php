@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CoffeeCategory;
+use App\Http\Requests\CreateCoffeeCategoryRequest;
+use App\Http\Requests\UpdateCoffeeCategoryRequest;
 
 class CoffeeCategoryController extends Controller
 {
@@ -34,7 +36,7 @@ class CoffeeCategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateCoffeeCategoryRequest $request)
     {
         $category = new CoffeeCategory();
         $category->name = $request->name;
@@ -64,7 +66,7 @@ class CoffeeCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCoffeeCategoryRequest $request, $id)
     {
         $category = CoffeeCategory::findOrFail($id);
         $category->name = $request->name;
@@ -81,6 +83,7 @@ class CoffeeCategoryController extends Controller
     public function destroy($id)
     {
         $category = CoffeeCategory::findOrFail($id);
+        $category->detach();
         $category->delete();
         return redirect()->route('categories.index');
     }
